@@ -32,3 +32,6 @@ The APK will be generated and copied to the desktop after a successful build.
 Check the unity.log file for detailed build information.
 
 ### Before use, customize the Buildscript.cs and azure-pipeline.yaml file according to your project 
+
+
+Happy Building! :)
