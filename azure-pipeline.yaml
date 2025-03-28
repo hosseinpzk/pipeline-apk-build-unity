@@ -1,0 +1,26 @@
+# Create azure-pipeline.yaml file in root of repository then write this code in it
+
+trigger:
+  - main  
+
+pool:
+  name: 'YOUR AGENT POOL'  #PUT YOUR AZURE AGENT POOL NAME 
+
+steps:
+  - checkout: self  
+    persistCredentials: true
+    clean: true
+
+
+  - script: |
+     "C:\Program Files\Unity\Hub\Editor\2022.3.43f1\Editor\Unity.exe" -quit -batchmode -projectPath "$(Build.SourcesDirectory)" -executeMethod BuildScript.BuildAPK -logFile "$(Build.ArtifactStagingDirectory)/unity.log"
+    displayName: 'Build APK using Unity'
+
+  - task: CopyFiles@2
+    inputs:
+     SourceFolder: 'C:\agent\_work\1\a' 
+     Contents: '*.apk'
+     TargetFolder: 'C:\Users\USERNAME\Desktop\Builds' #USER ACCOUNT ON WINDOWS SERVER
+    displayName: 'Copy APK to Desktop'
+  - script: type "$(Build.ArtifactStagingDirectory)\unity.log"
+    displayName: 'Show Unity Log'
